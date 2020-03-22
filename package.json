@@ -1,0 +1,29 @@
+{
+  "name": "police-api",
+  "version": "1.0.0",
+  "description": "Node.js Rest API para interação com BD Mysql",
+  "main": "server.js",
+  "scripts": {
+    "test": "nodemon start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paulo-manzone/police-api.git"
+  },
+  "keywords": [
+    "Node.js",
+    "Rest",
+    "API"
+  ],
+  "author": "Paulo Manzone",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paulo-manzone/police-api/issues"
+  },
+  "homepage": "https://github.com/paulo-manzone/police-api#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  }
+}
