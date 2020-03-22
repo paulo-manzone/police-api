@@ -72,13 +72,13 @@ exports.delete = (req, res) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: 'Not found Crime with id ${req.params.crime_id}.'
+          message: `Not found crime with id ${req.params.crime_id}.`
         });
       } else {
         res.status(500).send({
-          message: "Could not delete Crime with id " + req.params.crime_id
+          message: "Could not delete crime with id " + req.params.crime_id
         });
       }
-    } else res.send({ message: 'Crime was deleted successfully!' });
+    } else res.send({ message: `Crime ${req.params.crime_id} was deleted successfully!` });
   });
 };

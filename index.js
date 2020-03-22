@@ -17,6 +17,8 @@ app.get("/", (req, res) => {
 
 require("./app/routes/weapon.routes.js")(app);
 
+require("./app/routes/crime.routes.js")(app);
+
 //Configuring port to listen to requests
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
