@@ -62,10 +62,10 @@ Crime.create = (newCrime, result) => {
   Crime.findById = (crimeId, result) => {
 
     //Local variables storing every list of objects returned
-    lCrime = null;
-    lVictims = null;
-    lWeapons = null;
-    lCriminals = null;
+    lCrime = [];
+    lVictims = [];
+    lWeapons = [];
+    lCriminals = [];
 
     //Getting info about crime itself
     sql.query(`SELECT * FROM crime WHERE id_crime = ${crimeId}`, (err, res) => {
@@ -78,9 +78,12 @@ Crime.create = (newCrime, result) => {
       if (res.length) {
         console.log("found crime: ", res[0]);
         lCrime = res[0];
-      }else
+      }else {
         //if not found
         result({ kind: "not_found" }, null);
+        return;
+      }
+        
 
       //Getting info about victims
       sql.query(`select v.id_victim, v.tx_name from  crime as c 
@@ -98,9 +101,9 @@ Crime.create = (newCrime, result) => {
         if (res.length) {
           console.log("found victim: ", res[0]);
           lVictims = res;
-        }else
+        }//else
           //if not found
-          result({ kind: "not_found" }, null);
+          //result({ kind: "not_found" }, null);
 
         //Getting info about weapons
         sql.query(`select w.tx_model, wt.tx_weapon_type from crime as c
@@ -119,9 +122,9 @@ Crime.create = (newCrime, result) => {
             console.log("found weapon: ", res[0]);
             lWeapons = res;
            
-          }else
+          }//else
             //if not found
-            result({ kind: "not_found" }, null);
+            //result({ kind: "not_found" }, null);
 
           //Getting info about criminals
           sql.query(`select cl.tx_name, ct.tx_type from crime as c
@@ -139,14 +142,17 @@ Crime.create = (newCrime, result) => {
             if (res.length) {
               console.log("found weapon: ", res[0]);
               lCriminals = res;
-            }else
+            }//else
               //if not found
-              result({ kind: "not_found" }, null);
-
-            result (null, {'crime'  : lCrime,
-                   'victims': lVictims,
-                   'weapons': lWeapons,
-                   'criminals': lCriminals});
+              //result({ kind: "not_found" }, null);
+            
+            //Returning object with all the information
+            result (null, {'id_crime': lCrime.id_crime,
+                           'country' : lCrime.tx_country,
+                           'dt_crime': lCrime.dt_crime,
+                           'victims': lVictims,
+                           'weapons': lWeapons,
+                           'criminals': lCriminals});
           });
         
         });

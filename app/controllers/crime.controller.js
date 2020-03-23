@@ -25,7 +25,7 @@ exports.create = (req, res) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Unknown Error."
+          err.message || "Unknown Error (At Creating Crime)."
       });
     else res.send(data);
   });
@@ -39,7 +39,7 @@ exports.findAll = (req, res) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Unknown Error."
+          err.message || "Unknown Error (At Reading Crimes)."
       });
     else res.send(data);
   });
@@ -53,7 +53,7 @@ exports.findOne = (req, res) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: 'Not found Crime with id ${req.params.crime_id}.'
+          message: `Not found Crime with id ${req.params.crime_id}.`
         });
       } else {
         res.status(500).send({
