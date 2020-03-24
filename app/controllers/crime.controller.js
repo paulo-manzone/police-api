@@ -12,13 +12,15 @@ exports.create = (req, res) => {
 
   //Instantiating a Crime
   const crime = new Crime({
-    id: req.body.crime_id,
+    id: req.body.id_crime,
     country: req.body.country,
-    date: req.body.date,
+    date: req.body.dt_crime,
     victims: req.body.victims,
-    weapons: req.body.weapons
+    weapons: req.body.weapons,
+    criminals: req.body.criminals
   });
 
+   console.log('Corpo ', req.body);
 
   //Persisting Crime
   Crime.create(crime, (err, data) => {

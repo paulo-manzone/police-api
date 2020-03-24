@@ -3,11 +3,17 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
-// parse requests of content-type - application/json
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// parse application/json
 app.use(bodyParser.json());
 
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+//Configuring port to listen to requests
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log('Police API is running! Port: ', PORT);
+});
 
 
 //Welcome route
@@ -19,8 +25,4 @@ app.get("/", (req, res) => {
 
 require("./app/routes/crime.routes.js")(app);
 
-//Configuring port to listen to requests
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log('Police API is running! Port: ', PORT);
-});
+

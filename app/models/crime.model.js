@@ -7,6 +7,7 @@ const Crime = function(crime) {
   this.date        = crime.date;
   this.victims     = crime.victims;
   this.weapons     = crime.weapons;
+  this.criminals   = crime.criminals;
 };
 
 //================================================================================================
@@ -15,44 +16,54 @@ const Crime = function(crime) {
 Crime.create = (newCrime, result) => {
 
 
-    //Inserting in crime table 
-    sql.query("INSERT INTO crime  SET ?,?,?", newCrime.crime_id, newCrime.country, newCrime.date, (err, res) => {
+    //Inserting in crime table
+    console.log("TESTE", newCrime.victims); 
+    sql.query("INSERT INTO crime VALUES (?,?,?)", [newCrime.id, newCrime.country, newCrime.date], (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
         return;
       }
-  
-      console.log("created crime: ", { id: res.insertId, ...newCrime });
-      result(null, { id: res.insertId, ...newCrime });
-    });
 
-    //Inserting in crime-victims table
-    newCrime.victims.forEach(e => {
-      sql.query("INSERT INTO victim  SET ?, ?", e.id, (err, res) => {
-        if (err) {
-          console.log("error: ", err);
-          result(err, null);
-          return;
-        }
-    
+      //Inserting in victims-crime table
+        if(newCrime.victims)
+        sql.query("INSERT INTO victim_crime  VALUES (17, ?, ?)", [newCrime.victims], (err, res) => {
+          if (err) {
+            console.log("error: ", err);
+            result(err, null);
+            return;
+          }
+      
+          //Inserting in weapons-crime table
+          if(newCrime.weapons)
+          sql.query("INSERT INTO weapon_crime  VALUES (17, ?, ?)", [newCrime.weapons], (err, res) => {
+            if (err) {
+              console.log("error: ", err);
+              result(err, null);
+              return;
+            }
+        
+            //Inserting in criminal-crimine table
+            if(newCrime.criminals)
+            sql.query("INSERT INTO criminal_crime  VALUES (17, ?, ?, ?)", [newCrime.criminals], (err, res) => {
+              if (err) {
+                console.log("error: ", err);
+                result(err, null);
+                return;
+              }
+              
+            });
+          });
+        });
+
         console.log("created crime: ", { id: res.insertId, ...newCrime });
         result(null, { id: res.insertId, ...newCrime });
-      });
     });
+
+    
     
 
-    //Inserting in crime-weapons table 
-    sql.query("INSERT INTO crime  SET ?", newCrime, (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(err, null);
-        return;
-      }
-  
-      console.log("created crime: ", { id: res.insertId, ...newCrime });
-      result(null, { id: res.insertId, ...newCrime });
-    });
+    
 
   };
 
