@@ -12,7 +12,6 @@ exports.create = (req, res) => {
 
   //Instantiating a Crime
   const crime = new Crime({
-    id: req.body.id_crime,
     country: req.body.country,
     date: req.body.dt_crime,
     victims: req.body.victims,
