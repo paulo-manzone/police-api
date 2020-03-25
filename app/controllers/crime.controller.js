@@ -20,8 +20,6 @@ exports.create = (req, res) => {
     criminals: req.body.criminals
   });
 
-   console.log('Corpo ', req.body);
-
   //Persisting Crime
   Crime.create(crime, (err, data) => {
     if (err)

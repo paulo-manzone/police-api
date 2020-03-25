@@ -26,8 +26,17 @@ Crime.create = (newCrime, result) => {
       }
 
       //Inserting in victims-crime table
-        if(newCrime.victims)
-        sql.query("INSERT INTO victim_crime  VALUES (17, ?, ?)", [newCrime.victims], (err, res) => {
+      if(newCrime.victims){
+        values = [];
+        newCrime.victims.forEach(e => {
+          values.push([17, e.id_victim, newCrime.id]);
+          console.log('Dentro:',values);
+        })
+
+        console.log('Fora', values);
+      }
+      if(newCrime.victims)
+        sql.query("INSERT INTO victim_crime  VALUES ?", [values], (err, res) => {
           if (err) {
             console.log("error: ", err);
             result(err, null);
@@ -35,17 +44,33 @@ Crime.create = (newCrime, result) => {
           }
       
           //Inserting in weapons-crime table
+          if(newCrime.weapons){
+            values = [];
+            newCrime.weapons.forEach(e => {
+              values.push([17, e.id_weapon, newCrime.id]);
+              console.log('Dentro:',values);
+            });
+            console.log('Fora:',values);
+          }
           if(newCrime.weapons)
-          sql.query("INSERT INTO weapon_crime  VALUES (17, ?, ?)", [newCrime.weapons], (err, res) => {
+          sql.query("INSERT INTO weapon_crime  VALUES ?", [values], (err, res) => {
             if (err) {
               console.log("error: ", err);
               result(err, null);
               return;
             }
-        
+
             //Inserting in criminal-crimine table
+            if(newCrime.criminals){
+              values = [];
+              newCrime.criminals.forEach(e => {
+                values.push([17, e.id_criminal, newCrime.id, e.id_crime_type]);
+                console.log('Dentro:',values);
+              });
+              console.log('Fora:',values);
+            }
             if(newCrime.criminals)
-            sql.query("INSERT INTO criminal_crime  VALUES (17, ?, ?, ?)", [newCrime.criminals], (err, res) => {
+            sql.query("INSERT INTO criminal_crime  VALUES ?", [values], (err, res) => {
               if (err) {
                 console.log("error: ", err);
                 result(err, null);
@@ -59,11 +84,6 @@ Crime.create = (newCrime, result) => {
         console.log("created crime: ", { id: res.insertId, ...newCrime });
         result(null, { id: res.insertId, ...newCrime });
     });
-
-    
-    
-
-    
 
   };
 
