@@ -17,7 +17,6 @@ Crime.create = (newCrime, result) => {
 
 
     //Inserting in crime table
-    console.log("TESTE", newCrime.victims); 
     sql.query("INSERT INTO crime VALUES (?,?,?)", [newCrime.id, newCrime.country, newCrime.date], (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -30,14 +29,11 @@ Crime.create = (newCrime, result) => {
         values = [];
         newCrime.victims.forEach(e => {
           values.push([17, e.id_victim, newCrime.id]);
-          console.log('Dentro:',values);
         })
-
-        console.log('Fora', values);
       }
-      if(newCrime.victims)
+      //if(values.length != 0)
         sql.query("INSERT INTO victim_crime  VALUES ?", [values], (err, res) => {
-          if (err) {
+          if (err && err.errno != 1064) {
             console.log("error: ", err);
             result(err, null);
             return;
@@ -48,13 +44,11 @@ Crime.create = (newCrime, result) => {
             values = [];
             newCrime.weapons.forEach(e => {
               values.push([17, e.id_weapon, newCrime.id]);
-              console.log('Dentro:',values);
             });
-            console.log('Fora:',values);
           }
-          if(newCrime.weapons)
+          //if(values.length != 0)
           sql.query("INSERT INTO weapon_crime  VALUES ?", [values], (err, res) => {
-            if (err) {
+            if (err && err.errno != 1064) {
               console.log("error: ", err);
               result(err, null);
               return;
@@ -65,13 +59,11 @@ Crime.create = (newCrime, result) => {
               values = [];
               newCrime.criminals.forEach(e => {
                 values.push([17, e.id_criminal, newCrime.id, e.id_crime_type]);
-                console.log('Dentro:',values);
               });
-              console.log('Fora:',values);
             }
-            if(newCrime.criminals)
+            //if(values.length != 0)
             sql.query("INSERT INTO criminal_crime  VALUES ?", [values], (err, res) => {
-              if (err) {
+              if (err && errno != 1064) {
                 console.log("error: ", err);
                 result(err, null);
                 return;
