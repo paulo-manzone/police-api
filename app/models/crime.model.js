@@ -123,7 +123,6 @@ Crime.create = (newCrime, result) => {
       inner join victim as v on vc.id_victim = v.id_victim
       where c.id_crime = ${crimeId}`, (err, res) => {
 
-        console.log('3');
         if (err) {
           console.log("error: ", err);
           result(err, null);
@@ -218,7 +217,6 @@ Crime.create = (newCrime, result) => {
                         " DELETE FROM victim_crime WHERE id_crime=?;" +
                         " DELETE FROM weapon_crime WHERE id_crime=?;" +
                         " DELETE FROM criminal_crime WHERE id_crime=?;";
-    console.log(queryString);
     sql.query(queryString, [id, id, id, id] , (err, res) => {
       if (err) {
         console.log("error: ", err);

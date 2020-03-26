@@ -21,8 +21,6 @@ app.get("/", (req, res) => {
   res.json({ message: "This is the ultimate Police API" });
 });
 
-//require("./app/routes/weapon.routes.js")(app);
-
 require("./app/routes/crime.routes.js")(app);
 
 
