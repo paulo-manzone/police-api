@@ -11,6 +11,7 @@ Node.js REST API for interaction with Mysql Database
 
 ## Post body example
 
+```json
 {
     "country": "Guatemole",
     "dt_crime": "2019-02-22",
@@ -37,7 +38,7 @@ Node.js REST API for interaction with Mysql Database
         }
     ]
 }
-
+```
 
 
 
