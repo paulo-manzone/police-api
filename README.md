@@ -9,7 +9,7 @@ Node.js REST API for interaction with Mysql Database
 | /POST         | /crimes       | add a new crime                                  |
 | /DELETE       | /crimes/{id}  | remove the specified crime                       |
 
-##Post body example
+## Post body example
 
 {
     "country": "Guatemole",
