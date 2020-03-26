@@ -1,13 +1,19 @@
 const Crime = require("../models/crime.model.js");
+
+//Request body model
+const requestBodyModel = {"country": "Guacamole","dt_crime": "2019-02-22","victims": [{"id_victim": 1}],"criminals": [{"id_criminal":1,"id_crime_type":1}],"weapons":[{"id_weapon": 1}]};
+
 //================================================================================================
 // Creating Crime
 //================================================================================================
 exports.create = (req, res) => {
-  // Validate request
-  if (!req.body) {
+  // Validating request body (more validations needed)
+  if (!req.body.country || !req.body.dt_crime) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: "Request body content can not be empty!",
+      request_body_model: requestBodyModel
     });
+    return;
   }
 
   //Instantiating a Crime

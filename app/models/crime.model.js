@@ -1,5 +1,6 @@
 const sql = require("./db.js");
 
+
 //Construtor
 const Crime = function(crime) {
   this.id          = undefined;
@@ -17,27 +18,26 @@ Crime.create = (newCrime, result) => {
   
   //beginning transaction
   sql.beginTransaction(function(err) {
-    if (err) { throw err; }
+    if (err) { result(null, err); }
     //Inserting in crime table
     sql.query("INSERT INTO crime (tx_country, dt_crime) VALUES (?,?)", [newCrime.country, newCrime.date], (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        return sql.rollback(function() {
-          result(err, null);
-        });
-      }
+        if (err) {
+          console.log("error: ", err);
+          return sql.rollback(function() {
+            result(err, null);
+          });
+        }
 
-      //Giving the crime object it´s equivalent id in the database
-      newCrime.id = res.insertId;
+        //Giving the crime object it´s equivalent id in the database
+        newCrime.id = res.insertId;
 
-      //Inserting in victims-crime table
-      if(newCrime.victims){
+        //Inserting in victims-crime table
         values = [];
-        newCrime.victims.forEach(e => {
-          values.push([e.id_victim, newCrime.id]);
-        })
-      }
-      
+        if(newCrime.victims){
+          newCrime.victims.forEach(e => {
+            values.push([e.id_victim, newCrime.id]);
+          })
+        }
         sql.query("INSERT INTO victim_crime (id_victim, id_crime)  VALUES ?", [values], (err, res) => {
           if (err && err.errno != 1064) {
             console.log("error: ", err);
@@ -47,13 +47,12 @@ Crime.create = (newCrime, result) => {
           }
       
           //Inserting in weapons-crime table
+          values = [];
           if(newCrime.weapons){
-            values = [];
             newCrime.weapons.forEach(e => {
               values.push([e.id_weapon, newCrime.id]);
             });
           }
-          
           sql.query("INSERT INTO weapon_crime (id_weapon, id_crime)  VALUES ?", [values], (err, res) => {
             if (err && err.errno != 1064) {
               console.log("error: ", err);
@@ -63,13 +62,12 @@ Crime.create = (newCrime, result) => {
             }
 
             //Inserting in criminal-crimine table
+            values = [];
             if(newCrime.criminals){
-              values = [];
               newCrime.criminals.forEach(e => {
                 values.push([e.id_criminal, newCrime.id, e.id_crime_type]);
               });
             }
-            
             sql.query("INSERT INTO criminal_crime (id_criminal, id_crime, id_crime_type)  VALUES ?", [values], (err, res) => {
               if (err && err.errno != 1064) {
                 console.log("error: ", err);
@@ -78,7 +76,7 @@ Crime.create = (newCrime, result) => {
                 });
               }
 
-              console.log("created crime: ", { id: res.insertId, ...newCrime });
+              console.log("created crime: ", { ...newCrime });
               result(null, { id: res.insertId, ...newCrime });
 
             });
