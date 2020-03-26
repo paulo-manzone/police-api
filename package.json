@@ -4,7 +4,7 @@
   "description": "Node.js Rest API para interação com BD Mysql",
   "main": "server.js",
   "scripts": {
-    "test": "nodemon start"
+    "start": "nodemon start"
   },
   "repository": {
     "type": "git",
